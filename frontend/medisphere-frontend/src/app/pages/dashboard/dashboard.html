@@ -1,0 +1,2290 @@
+<div class="dashboard">
+
+  <!-- =========================================================
+       TOP HEADER
+       ========================================================= -->
+
+  <header class="topbar">
+
+    <div class="brand">
+
+      <div class="brand-mark">
+        <span>M</span>
+      </div>
+
+      <div class="brand-copy">
+        <div class="brand-name">
+          MediSphere
+        </div>
+
+        <div class="brand-subtitle">
+          Cognitive Health Intelligence
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="header-right">
+
+      <div class="header-meta">
+
+        <span class="meta-label">
+          ENVIRONMENT
+        </span>
+
+        <strong>
+          CLINICAL
+        </strong>
+
+      </div>
+
+
+      <div class="system-status">
+
+        <span class="status-dot"></span>
+
+        <span>
+          System synchronized
+        </span>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =========================================================
+       NAVIGATION
+       ========================================================= -->
+
+  <nav class="main-nav">
+
+    <div class="nav-inner">
+
+      <button
+        [class.active]="activeTab === 'patients'"
+        (click)="setTab('patients')">
+
+        <span class="nav-icon">
+          01
+        </span>
+
+        <span>
+          Patient Database
+        </span>
+
+      </button>
+
+
+      <button
+        [class.active]="activeTab === 'digital-twin'"
+        (click)="setTab('digital-twin')"
+        [disabled]="!selectedPatient">
+
+        <span class="nav-icon">
+          02
+        </span>
+
+        <span>
+          Digital Twin
+        </span>
+
+      </button>
+
+
+      <button
+        [class.active]="activeTab === 'consent'"
+        (click)="setTab('consent')"
+        [disabled]="!selectedPatient">
+
+        <span class="nav-icon">
+          03
+        </span>
+
+        <span>
+          Patient Consent
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <div class="nav-status">
+
+      <span class="live-dot"></span>
+
+      FHIR R4 CONNECTED
+
+    </div>
+
+  </nav>
+
+
+
+  <!-- =========================================================
+       PATIENT DATABASE
+       ========================================================= -->
+
+  <main
+    *ngIf="activeTab === 'patients'"
+    class="main-content"
+  >
+
+
+    <!-- =======================================================
+         HERO
+         ======================================================= -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <div class="hero-eyebrow">
+          MEDISPHERE / HEALTH INTELLIGENCE PLATFORM
+        </div>
+
+
+        <h1>
+
+          Patient
+
+          <span>
+            Intelligence
+          </span>
+
+        </h1>
+
+
+        <p>
+
+          A unified clinical workspace for FHIR-powered patient
+          records, real-time health observations and digital
+          health twin management.
+
+        </p>
+
+
+        <div class="hero-features">
+
+          <span>
+
+            <i></i>
+
+            FHIR R4
+
+          </span>
+
+
+          <span>
+
+            <i></i>
+
+            MongoDB
+
+          </span>
+
+
+          <span>
+
+            <i></i>
+
+            AI READY
+
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="hero-visual">
+
+        <div class="orb orb-one"></div>
+
+        <div class="orb orb-two"></div>
+
+
+        <div class="hero-ring ring-one"></div>
+
+        <div class="hero-ring ring-two"></div>
+
+
+        <div class="hero-core">
+
+          <div class="core-pulse"></div>
+
+          <span>
+            MS
+          </span>
+
+        </div>
+
+
+        <div class="floating-stat stat-one">
+
+          <span>
+            DATA
+          </span>
+
+          <strong>
+            FHIR
+          </strong>
+
+        </div>
+
+
+        <div class="floating-stat stat-two">
+
+          <span>
+            STATUS
+          </span>
+
+          <strong>
+            LIVE
+          </strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         DATABASE OVERVIEW
+         ======================================================= -->
+
+    <section class="overview-grid">
+
+
+      <div class="overview-card primary-overview">
+
+        <div class="overview-icon">
+
+          <span>
+            DB
+          </span>
+
+        </div>
+
+
+        <div class="overview-content">
+
+          <div class="section-label">
+            PATIENT DATABASE
+          </div>
+
+
+          <div class="overview-number">
+            {{ patients.length }}
+          </div>
+
+
+          <div class="overview-description">
+
+            Clinical patient records available
+
+          </div>
+
+        </div>
+
+
+        <div class="overview-line"></div>
+
+
+        <div class="overview-footer">
+
+          <span>
+            SPRING BOOT
+          </span>
+
+          <span>
+            ● MONGODB
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="mini-overview">
+
+        <div class="mini-icon">
+
+          <span>
+            FHIR
+          </span>
+
+        </div>
+
+
+        <div>
+
+          <div class="section-label">
+            STANDARD
+          </div>
+
+          <strong>
+            FHIR R4
+          </strong>
+
+          <p>
+            Healthcare interoperability
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="mini-overview">
+
+        <div class="mini-icon twin-mini">
+
+          <span>
+            DT
+          </span>
+
+        </div>
+
+
+        <div>
+
+          <div class="section-label">
+            DIGITAL TWIN
+          </div>
+
+          <strong>
+            READY
+          </strong>
+
+          <p>
+            Patient intelligence layer
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         SEARCH
+         ======================================================= -->
+
+    <section class="search-panel">
+
+      <div class="search-heading">
+
+        <div class="search-icon">
+
+          <span></span>
+
+        </div>
+
+
+        <div>
+
+          <div class="section-label">
+            PATIENT SEARCH
+          </div>
+
+          <strong>
+            Find a clinical record
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="search-input-wrap">
+
+        <span class="search-prefix">
+          SEARCH
+        </span>
+
+
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Search by patient name, FHIR ID or gender..."
+        />
+
+
+        <span class="search-shortcut">
+          LIVE
+        </span>
+
+      </div>
+
+
+      <div class="record-count">
+
+        <strong>
+          {{ filteredPatients.length }}
+        </strong>
+
+        <span>
+          records
+        </span>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         LOADING
+         ======================================================= -->
+
+    <div
+      *ngIf="loading"
+      class="state-card loading-state">
+
+      <div class="loader"></div>
+
+
+      <div>
+
+        <strong>
+          Loading clinical records
+        </strong>
+
+        <p>
+          Synchronizing patient data from the MediSphere backend...
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =======================================================
+         ERROR
+         ======================================================= -->
+
+    <div
+      *ngIf="error"
+      class="state-card error-state">
+
+      <div class="state-symbol">
+        !
+      </div>
+
+
+      <div>
+
+        <strong>
+          Backend connection error
+        </strong>
+
+        <p>
+          {{ error }}
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =======================================================
+         PATIENT RECORDS
+         ======================================================= -->
+
+    <section
+      *ngIf="!loading && !error"
+      class="records-section">
+
+
+      <div class="section-heading-row">
+
+        <div>
+
+          <div class="section-label">
+            CLINICAL RECORDS
+          </div>
+
+
+          <h2>
+            Digital Health Data
+          </h2>
+
+
+          <p>
+            Select a patient to open their Digital Twin.
+          </p>
+
+        </div>
+
+
+        <div class="record-indicator">
+
+          <span></span>
+
+          LIVE DATASET
+
+        </div>
+
+      </div>
+
+
+
+      <!-- PATIENT GRID -->
+
+      <div
+        *ngIf="displayedPatients.length > 0"
+        class="patient-grid">
+
+
+        <article
+          *ngFor="let patient of displayedPatients"
+          class="patient-card"
+          (click)="openPatient(patient)"
+        >
+
+
+          <!-- CARD TOP -->
+
+          <div class="patient-card-top">
+
+            <div class="patient-avatar">
+
+              {{ patient.name.charAt(0).toUpperCase() }}
+
+            </div>
+
+
+            <div class="patient-title">
+
+              <div class="patient-status">
+
+                <span></span>
+
+                ACTIVE RECORD
+
+              </div>
+
+
+              <h3>
+                {{ patient.name }}
+              </h3>
+
+
+              <div class="patient-id">
+
+                FHIR ID /
+
+                <strong>
+                  {{ patient.id }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="card-arrow">
+              ↗
+            </div>
+
+          </div>
+
+
+
+          <!-- TAGS -->
+
+          <div class="tags">
+
+            <span>
+              FHIR R4
+            </span>
+
+            <span>
+              MongoDB
+            </span>
+
+            <span>
+              Digital Twin
+            </span>
+
+          </div>
+
+
+
+          <!-- BASIC INFORMATION -->
+
+          <div class="basic-info">
+
+            <div class="info-cell">
+
+              <span class="info-label">
+                GENDER
+              </span>
+
+              <strong>
+                {{ patient.gender }}
+              </strong>
+
+            </div>
+
+
+            <div class="info-cell">
+
+              <span class="info-label">
+                BIRTH DATE
+              </span>
+
+              <strong>
+                {{ patient.birthDate }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- VITAL SIGNS -->
+
+          <div class="vitals-header">
+
+            <span>
+              VITAL SIGNS
+            </span>
+
+            <span class="vitals-live">
+              ● LIVE
+            </span>
+
+          </div>
+
+
+
+          <div class="health-grid">
+
+
+            <div class="health-item">
+
+              <div class="health-icon heart-icon">
+                ♥
+              </div>
+
+
+              <div class="health-data">
+
+                <span>
+                  HEART RATE
+                </span>
+
+                <strong>
+                  {{ patient.heartRate }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="health-item">
+
+              <div class="health-icon pressure-icon">
+                BP
+              </div>
+
+
+              <div class="health-data">
+
+                <span>
+                  BLOOD PRESSURE
+                </span>
+
+                <strong>
+                  {{ patient.bloodPressure }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="health-item">
+
+              <div class="health-icon glucose-icon">
+                G
+              </div>
+
+
+              <div class="health-data">
+
+                <span>
+                  GLUCOSE
+                </span>
+
+                <strong>
+                  {{ patient.glucose }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="health-item">
+
+              <div class="health-icon bmi-icon">
+                BMI
+              </div>
+
+
+              <div class="health-data">
+
+                <span>
+                  BODY MASS INDEX
+                </span>
+
+                <strong>
+                  {{ patient.bmi }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- CONDITIONS -->
+
+          <div
+            *ngIf="patient.conditions.length > 0"
+            class="data-section">
+
+
+            <div class="data-section-heading">
+
+              <label>
+                CONDITIONS
+              </label>
+
+              <span>
+                {{ patient.conditions.length }}
+              </span>
+
+            </div>
+
+
+            <div class="chips">
+
+              <span
+                *ngFor="let condition of patient.conditions">
+
+                {{ condition }}
+
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- MEDICATIONS -->
+
+          <div
+            *ngIf="patient.medications.length > 0"
+            class="data-section">
+
+
+            <div class="data-section-heading">
+
+              <label>
+                MEDICATIONS
+              </label>
+
+              <span>
+                {{ patient.medications.length }}
+              </span>
+
+            </div>
+
+
+            <div class="chips medication-chips">
+
+              <span
+                *ngFor="let medication of patient.medications">
+
+                {{ medication }}
+
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- CARD FOOTER -->
+
+          <div class="patient-card-footer">
+
+            <span>
+              OPEN DIGITAL TWIN
+            </span>
+
+            <strong>
+              →
+            </strong>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+
+      <!-- NO RESULTS -->
+
+      <div
+        *ngIf="displayedPatients.length === 0"
+        class="empty-state">
+
+
+        <div class="empty-icon">
+          ?
+        </div>
+
+
+        <h3>
+          No patient records found
+        </h3>
+
+
+        <p>
+          No clinical records match your current search.
+        </p>
+
+      </div>
+
+
+
+      <!-- PAGINATION -->
+
+      <div
+        *ngIf="patients.length > pageSize"
+        class="pagination">
+
+
+        <button
+          (click)="previousPage()"
+          [disabled]="currentPage === 1">
+
+          <span>
+            ←
+          </span>
+
+          Previous
+
+        </button>
+
+
+        <div class="page-display">
+
+          <span>
+            PAGE
+          </span>
+
+          <strong>
+            {{ currentPage }}
+          </strong>
+
+          <span>
+            OF
+          </span>
+
+          <strong>
+            {{ totalPages }}
+          </strong>
+
+        </div>
+
+
+        <button
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages">
+
+          Next
+
+          <span>
+            →
+          </span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         FEDERATED AI SECTION
+         ========================================================= -->
+
+    <section class="federated-ai-section">
+
+
+      <!-- SECTION HEADER -->
+
+      <div class="section-header">
+
+        <div>
+
+          <span class="section-eyebrow">
+            ARTIFICIAL INTELLIGENCE
+          </span>
+
+
+          <h2>
+            Federated Learning
+          </h2>
+
+
+          <p>
+            Privacy-preserving machine learning across
+            multiple simulated hospitals.
+          </p>
+
+        </div>
+
+
+        <div class="ai-status">
+
+          <span
+            class="status-dot"
+            [class.online]="federatedStatus?.status === 'running' && federatedStatus?.model_loaded">
+          </span>
+
+
+          {{
+            federatedStatus?.status === 'running' && federatedStatus?.model_loaded
+              ? 'AI Service Online'
+              : 'AI Service Offline'
+          }}
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =======================================================
+           STATUS CARDS
+           ======================================================= -->
+
+      <div class="ai-stat-grid">
+
+
+        <!-- HOSPITALS -->
+
+        <div class="ai-stat-card">
+
+          <span class="ai-stat-label">
+            Hospitals
+          </span>
+
+
+          <strong>
+            {{ federatedStatus?.hospitals ?? '—' }}
+          </strong>
+
+
+          <small>
+            Federated clients
+          </small>
+
+        </div>
+
+
+
+        <!-- MODEL -->
+
+        <div class="ai-stat-card">
+
+          <span class="ai-stat-label">
+            Model
+          </span>
+
+
+          <strong>
+            {{ federatedStatus?.model ?? '—' }}
+          </strong>
+
+
+          <small>
+            {{ federatedStatus?.trees_per_hospital ?? '—' }} local trees per hospital
+          </small>
+
+        </div>
+
+
+
+        <!-- STATUS -->
+
+        <div class="ai-stat-card">
+
+          <span class="ai-stat-label">
+            Status
+          </span>
+
+
+          <strong>
+
+            {{
+              federatedStatus?.model_loaded
+                ? 'Loaded'
+                : 'Unavailable'
+            }}
+
+          </strong>
+
+
+          <small>
+            Global model
+          </small>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =======================================================
+           TRAINING CONTROL
+           ======================================================= -->
+
+      <div class="ai-control-panel">
+
+
+        <div>
+
+          <h3>
+            Federated Random Forest Model
+          </h3>
+
+
+          <p>
+
+            Each hospital trains a local Random Forest.
+            The local trees are then aggregated into a
+            global federated model.
+
+          </p>
+
+        </div>
+
+
+        <button
+          class="train-ai-button"
+          (click)="loadFederatedAI()">
+
+          Refresh AI Results
+
+        </button>
+
+      </div>
+
+
+
+      <!-- =======================================================
+           SUCCESS MESSAGE
+           ======================================================= -->
+
+      <div
+        class="ai-message"
+        *ngIf="aiMessage">
+
+        {{ aiMessage }}
+
+      </div>
+
+
+
+      <!-- =======================================================
+           ERROR MESSAGE
+           ======================================================= -->
+
+      <div
+        class="ai-error"
+        *ngIf="aiError">
+
+        {{ aiError }}
+
+      </div>
+
+
+
+      <!-- =======================================================
+           GLOBAL MODEL RESULTS
+           ======================================================= -->
+
+      <div
+        class="ai-results"
+        *ngIf="federatedResults as results">
+
+
+        <!-- RESULTS HEADER -->
+
+        <div class="results-header">
+
+          <div>
+
+            <span class="section-eyebrow">
+              GLOBAL MODEL
+            </span>
+
+
+            <h3>
+              Federated Model Performance
+            </h3>
+
+          </div>
+
+
+          <span class="model-badge">
+            Random Forest
+          </span>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             METRIC GRID
+             ===================================================== -->
+
+        <div class="metric-grid">
+
+
+          <!-- ACCURACY -->
+
+          <div class="metric-card">
+
+            <span>
+              Accuracy
+            </span>
+
+
+            <strong>
+
+              {{
+                results.global_metrics.accuracy * 100
+                  | number:'1.1-2'
+              }}%
+
+            </strong>
+
+          </div>
+
+
+
+          <!-- PRECISION -->
+
+          <div class="metric-card">
+
+            <span>
+              Precision
+            </span>
+
+
+            <strong>
+
+              {{
+                results.global_metrics.precision * 100
+                  | number:'1.1-2'
+              }}%
+
+            </strong>
+
+          </div>
+
+
+
+          <!-- RECALL -->
+
+          <div class="metric-card">
+
+            <span>
+              Recall
+            </span>
+
+
+            <strong>
+
+              {{
+                results.global_metrics.recall * 100
+                  | number:'1.1-2'
+              }}%
+
+            </strong>
+
+          </div>
+
+
+
+          <!-- F1 -->
+
+          <div class="metric-card">
+
+            <span>
+              F1 Score
+            </span>
+
+
+            <strong>
+
+              {{
+                results.global_metrics.f1 * 100
+                  | number:'1.1-2'
+              }}%
+
+            </strong>
+
+          </div>
+
+
+
+          <!-- ROC AUC -->
+
+          <div class="metric-card">
+
+            <span>
+              ROC-AUC
+            </span>
+
+
+            <strong>
+
+              {{
+                results.global_metrics.roc_auc * 100
+                  | number:'1.1-2'
+              }}%
+
+            </strong>
+
+          </div>
+
+
+          <!-- PR AUC -->
+
+          <div class="metric-card">
+
+            <span>
+              PR-AUC
+            </span>
+
+
+            <strong>
+
+              {{
+                results.global_metrics.pr_auc * 100
+                  | number:'1.1-2'
+              }}%
+
+            </strong>
+
+          </div>
+
+
+          <!-- GLOBAL TREES -->
+
+          <div class="metric-card">
+
+            <span>
+              Global Trees
+            </span>
+
+
+            <strong>
+              {{ results.federated_learning.global_trees }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             HOSPITAL TRAINING TABLE
+             ===================================================== -->
+
+        <div class="hospital-table">
+
+
+          <h3>
+            Hospital Training Nodes
+          </h3>
+
+
+          <table>
+
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Hospital
+                </th>
+
+                <th>
+                  Samples
+                </th>
+
+                <th>
+                  Trees
+                </th>
+
+                <th>
+                  Positive
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+
+            <tbody>
+
+              <tr
+                *ngFor="let hospital of hospitalResults">
+
+
+                <td>
+                  {{ hospital.hospital }}
+                </td>
+
+
+                <td>
+                  {{ hospital.patients }}
+                </td>
+
+
+                <td>
+                  {{ hospital.local_trees }}
+                </td>
+
+
+                <td>
+                  {{ hospital.diabetes_positive }}
+                </td>
+
+                <td>
+                  {{ hospital.status }}
+
+                </td>
+
+
+              </tr>
+
+            </tbody>
+
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- =========================================================
+       DIGITAL TWIN
+       ========================================================= -->
+
+  <main
+    *ngIf="selectedPatient && activeTab === 'digital-twin'"
+    class="main-content"
+  >
+
+
+    <!-- BACK BUTTON -->
+
+    <button
+      class="back-button"
+      (click)="setTab('patients')">
+
+      <span>
+        ←
+      </span>
+
+      Back to Patient Database
+
+    </button>
+
+
+
+    <!-- TWIN HEADER -->
+
+    <section class="twin-header">
+
+
+      <div class="twin-header-left">
+
+        <div class="patient-avatar large">
+
+          {{ selectedPatient.name.charAt(0).toUpperCase() }}
+
+        </div>
+
+
+        <div>
+
+          <div class="section-label">
+            DIGITAL HEALTH TWIN
+          </div>
+
+
+          <h1>
+            {{ selectedPatient.name }}
+          </h1>
+
+
+          <p>
+
+            FHIR ID /
+
+            <strong>
+              {{ selectedPatient.id }}
+            </strong>
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="twin-live-status">
+
+        <span></span>
+
+        DIGITAL TWIN ACTIVE
+
+      </div>
+
+    </section>
+
+
+
+    <!-- TWIN METRICS -->
+
+    <section class="twin-grid">
+
+
+      <div class="twin-card">
+
+        <div class="twin-card-icon">
+          01
+        </div>
+
+        <label>
+          GENDER
+        </label>
+
+        <strong>
+          {{ selectedPatient.gender }}
+        </strong>
+
+        <span class="metric-line"></span>
+
+      </div>
+
+
+
+      <div class="twin-card">
+
+        <div class="twin-card-icon">
+          02
+        </div>
+
+        <label>
+          BIRTH DATE
+        </label>
+
+        <strong>
+          {{ selectedPatient.birthDate }}
+        </strong>
+
+        <span class="metric-line"></span>
+
+      </div>
+
+
+
+      <div class="twin-card vital-twin-card">
+
+        <div class="twin-card-icon">
+          ♥
+        </div>
+
+        <label>
+          HEART RATE
+        </label>
+
+        <strong>
+          {{ selectedPatient.heartRate }}
+        </strong>
+
+        <span class="metric-live">
+          LIVE
+        </span>
+
+      </div>
+
+
+
+      <div class="twin-card vital-twin-card">
+
+        <div class="twin-card-icon">
+          BP
+        </div>
+
+        <label>
+          BLOOD PRESSURE
+        </label>
+
+        <strong>
+          {{ selectedPatient.bloodPressure }}
+        </strong>
+
+        <span class="metric-live">
+          LIVE
+        </span>
+
+      </div>
+
+
+
+      <div class="twin-card vital-twin-card">
+
+        <div class="twin-card-icon">
+          G
+        </div>
+
+        <label>
+          GLUCOSE
+        </label>
+
+        <strong>
+          {{ selectedPatient.glucose }}
+        </strong>
+
+        <span class="metric-live">
+          LIVE
+        </span>
+
+      </div>
+
+
+
+      <div class="twin-card vital-twin-card">
+
+        <div class="twin-card-icon">
+          BMI
+        </div>
+
+        <label>
+          BMI
+        </label>
+
+        <strong>
+          {{ selectedPatient.bmi }}
+        </strong>
+
+        <span class="metric-live">
+          LIVE
+        </span>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- CLINICAL INFORMATION -->
+
+    <section class="detail-layout">
+
+
+      <section class="detail-card">
+
+        <div class="detail-card-header">
+
+          <div>
+
+            <div class="section-label">
+              CLINICAL INFORMATION
+            </div>
+
+            <h2>
+              Conditions
+            </h2>
+
+          </div>
+
+
+          <div class="detail-count">
+
+            {{ selectedPatient.conditions.length }}
+
+          </div>
+
+        </div>
+
+
+        <div
+          *ngIf="selectedPatient.conditions.length > 0"
+          class="large-chips">
+
+
+          <span
+            *ngFor="let condition of selectedPatient.conditions">
+
+            <i></i>
+
+            {{ condition }}
+
+          </span>
+
+        </div>
+
+
+        <div
+          *ngIf="selectedPatient.conditions.length === 0"
+          class="detail-empty">
+
+          No conditions available.
+
+        </div>
+
+      </section>
+
+
+
+      <section class="detail-card">
+
+        <div class="detail-card-header">
+
+          <div>
+
+            <div class="section-label">
+              MEDICATION HISTORY
+            </div>
+
+            <h2>
+              Medications
+            </h2>
+
+          </div>
+
+
+          <div class="detail-count">
+
+            {{ selectedPatient.medications.length }}
+
+          </div>
+
+        </div>
+
+
+        <div
+          *ngIf="selectedPatient.medications.length > 0"
+          class="large-chips medication-large">
+
+
+          <span
+            *ngFor="let medication of selectedPatient.medications">
+
+            <i></i>
+
+            {{ medication }}
+
+          </span>
+
+        </div>
+
+
+        <div
+          *ngIf="selectedPatient.medications.length === 0"
+          class="detail-empty">
+
+          No medications available.
+
+        </div>
+
+      </section>
+
+    </section>
+
+
+
+    <!-- CONSENT ACTION -->
+
+    <section class="action-card">
+
+
+      <div class="action-icon">
+
+        <span>
+          ✓
+        </span>
+
+      </div>
+
+
+      <div class="action-content">
+
+        <div class="section-label">
+          DATA GOVERNANCE
+        </div>
+
+
+        <h2>
+          Patient Consent
+        </h2>
+
+
+        <p>
+
+          Manage permissions and control which healthcare
+          data categories can be accessed.
+
+        </p>
+
+      </div>
+
+
+      <button
+        class="primary-button"
+        (click)="setTab('consent')">
+
+        Manage Consent
+
+        <span>
+          →
+        </span>
+
+      </button>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =========================================================
+       PATIENT CONSENT
+       ========================================================= -->
+
+  <main
+    *ngIf="selectedPatient && activeTab === 'consent'"
+    class="main-content"
+  >
+
+
+    <!-- BACK BUTTON -->
+
+    <button
+      class="back-button"
+      (click)="setTab('digital-twin')">
+
+      <span>
+        ←
+      </span>
+
+      Back to Digital Twin
+
+    </button>
+
+
+
+    <!-- CONSENT HEADER -->
+
+    <section class="consent-header">
+
+
+      <div>
+
+        <div class="section-label">
+          PATIENT DATA GOVERNANCE
+        </div>
+
+
+        <h1>
+          Consent Management
+        </h1>
+
+
+        <p>
+
+          Configure controlled access to
+          {{ selectedPatient.name }}'s healthcare data.
+
+        </p>
+
+      </div>
+
+
+      <div class="governance-badge">
+
+        <span>
+          SECURE
+        </span>
+
+        DATA ACCESS
+
+      </div>
+
+    </section>
+
+
+
+    <!-- CONSENT CARD -->
+
+    <section class="consent-card">
+
+
+      <!-- PATIENT -->
+
+      <div class="consent-patient">
+
+
+        <div class="patient-avatar">
+
+          {{ selectedPatient.name.charAt(0).toUpperCase() }}
+
+        </div>
+
+
+        <div class="consent-patient-info">
+
+          <div class="section-label">
+            SELECTED PATIENT
+          </div>
+
+
+          <h2>
+            {{ selectedPatient.name }}
+          </h2>
+
+
+          <span>
+
+            FHIR ID /
+
+            {{ selectedPatient.id }}
+
+          </span>
+
+        </div>
+
+
+        <div class="patient-secure">
+
+          <span></span>
+
+          VERIFIED RECORD
+
+        </div>
+
+      </div>
+
+
+
+      <div class="consent-divider"></div>
+
+
+
+      <!-- ACCESS STATUS -->
+
+      <div class="consent-status">
+
+
+        <div>
+
+          <label>
+            DATA ACCESS STATUS
+          </label>
+
+
+          <strong
+            [class.enabled]="consentGranted">
+
+            {{
+              consentGranted
+                ? 'Access Granted'
+                : 'Access Not Granted'
+            }}
+
+          </strong>
+
+
+          <p>
+
+            {{
+              consentGranted
+                ? 'Selected healthcare data can be accessed.'
+                : 'No healthcare data access has been granted.'
+            }}
+
+          </p>
+
+        </div>
+
+
+        <button
+          class="toggle-button"
+          [class.enabled]="consentGranted"
+          (click)="toggleConsent()">
+
+
+          <span class="toggle-track">
+
+            <span class="toggle-knob"></span>
+
+          </span>
+
+
+          {{
+            consentGranted
+              ? 'Granted'
+              : 'Grant Access'
+          }}
+
+        </button>
+
+      </div>
+
+
+
+      <!-- FORM -->
+
+      <div class="form-grid">
+
+
+        <div class="form-field">
+
+          <label>
+            PURPOSE OF ACCESS
+          </label>
+
+
+          <select
+            [(ngModel)]="consentPurpose">
+
+
+            <option value="Clinical Care">
+              Clinical Care
+            </option>
+
+
+            <option value="Diagnosis">
+              Diagnosis
+            </option>
+
+
+            <option value="Treatment">
+              Treatment
+            </option>
+
+
+            <option value="Research">
+              Research
+            </option>
+
+          </select>
+
+        </div>
+
+
+
+        <div class="form-field">
+
+          <label>
+            ACCESS DURATION
+          </label>
+
+
+          <select
+            [(ngModel)]="accessDuration">
+
+
+            <option value="1 Hour">
+              1 Hour
+            </option>
+
+
+            <option value="24 Hours">
+              24 Hours
+            </option>
+
+
+            <option value="7 Days">
+              7 Days
+            </option>
+
+
+            <option value="30 Days">
+              30 Days
+            </option>
+
+          </select>
+
+        </div>
+
+
+
+        <div class="form-field">
+
+          <label>
+            REQUESTED BY
+          </label>
+
+
+          <input
+            type="text"
+            [(ngModel)]="requestedBy"
+            placeholder="Doctor / Hospital / Researcher"
+          />
+
+        </div>
+
+      </div>
+
+
+
+      <!-- DATA ACCESS SCOPE -->
+
+      <div class="scope-section">
+
+
+        <div class="scope-heading">
+
+
+          <div>
+
+            <label>
+              DATA ACCESS SCOPE
+            </label>
+
+
+            <p>
+              Select which categories may be accessed.
+            </p>
+
+          </div>
+
+
+          <span>
+
+            {{ selectedScopes.length }}
+
+            SELECTED
+
+          </span>
+
+        </div>
+
+
+
+        <div class="scope-grid">
+
+
+          <button
+            type="button"
+            *ngFor="
+              let scope of [
+                'Basic Demographics',
+                'Vital Signs',
+                'Conditions',
+                'Medications',
+                'Diagnostic Reports'
+              ]
+            "
+            class="scope-button"
+            [class.selected]="selectedScopes.includes(scope)"
+            [disabled]="!consentGranted"
+            (click)="toggleScope(scope)"
+          >
+
+
+            <span class="scope-check">
+
+              {{
+                selectedScopes.includes(scope)
+                  ? '✓'
+                  : '+'
+              }}
+
+            </span>
+
+
+            <span class="scope-name">
+
+              {{ scope }}
+
+            </span>
+
+
+            <span class="scope-arrow">
+
+              →
+
+            </span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ERROR -->
+
+      <div
+        *ngIf="consentError"
+        class="consent-error">
+
+        <span>
+          !
+        </span>
+
+        {{ consentError }}
+
+      </div>
+
+
+
+      <!-- SUCCESS -->
+
+      <div
+        *ngIf="consentMessage"
+        class="consent-success">
+
+        <span>
+          ✓
+        </span>
+
+        {{ consentMessage }}
+
+      </div>
+
+
+
+      <!-- ACTIONS -->
+
+      <div class="consent-actions">
+
+
+        <button
+          class="revoke-button"
+          (click)="revokeConsent()"
+          [disabled]="!consentGranted">
+
+          Revoke Consent
+
+        </button>
+
+
+        <button
+          class="primary-button"
+          (click)="saveConsent()"
+          [disabled]="
+            consentLoading ||
+            !consentGranted
+          ">
+
+
+          {{
+            consentLoading
+              ? 'Saving...'
+              : 'Save Consent'
+          }}
+
+
+          <span>
+            →
+          </span>
+
+        </button>
+
+      </div>
+
+
+
+      <!-- PRIVACY -->
+
+      <div class="privacy-note">
+
+
+        <div class="privacy-icon">
+          🔒
+        </div>
+
+
+        <div>
+
+          <strong>
+            Privacy & data governance
+          </strong>
+
+
+          <p>
+
+            Patient consent controls which categories
+            of health information can be accessed.
+            In a production system, this consent record
+            would be persisted and enforced by the
+            backend before data is disclosed.
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
