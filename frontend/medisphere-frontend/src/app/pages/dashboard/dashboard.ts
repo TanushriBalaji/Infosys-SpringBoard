@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { PatientDataService } from '../../services/patient-data.service';
 import { RiskPredictionService, RiskPrediction, AiHealth } from '../../services/risk-prediction.service';
+import { AlertService, RealtimeVitalRecord } from '../../services/alert.service';
+import { AlertsComponent } from '../alerts/alerts';
 
 export interface PatientCard {
   id: string;
@@ -32,12 +35,13 @@ interface ConsentRecord {
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    AlertsComponent
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard implements OnInit {
+export class Dashboard implements OnInit, OnDestroy {
 
   patients: PatientCard[] = [];
   private rawPatientsMap: Map<string, any> = new Map();
@@ -53,6 +57,8 @@ export class Dashboard implements OnInit {
   activeTab = 'patients';
 
   selectedPatient: PatientCard | null = null;
+  realtimeVitals: RealtimeVitalRecord | null = null;
+  private telemetrySub?: Subscription;
 
   consentGranted = false;
   consentPurpose = 'Clinical Care';
@@ -81,12 +87,35 @@ export class Dashboard implements OnInit {
 
   constructor(
     private patientDataService: PatientDataService,
-    private riskPredictionService: RiskPredictionService
+    private riskPredictionService: RiskPredictionService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
     this.loadPatients();
     this.checkAiHealth();
+    this.alertService.connectSse();
+    this.telemetrySub = this.alertService.telemetry$.subscribe({
+      next: (telemetry) => {
+        if (this.selectedPatient && telemetry.patientId === this.selectedPatient.id) {
+          this.realtimeVitals = {
+            patientId: telemetry.patientId,
+            timestamp: telemetry.timestamp,
+            heartRate: telemetry.heartRate,
+            spo2: telemetry.spo2,
+            systolicBP: telemetry.systolicBP,
+            diastolicBP: telemetry.diastolicBP,
+            temperature: telemetry.temperature
+          };
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.telemetrySub) {
+      this.telemetrySub.unsubscribe();
+    }
   }
 
   // =========================================================
@@ -469,7 +498,22 @@ export class Dashboard implements OnInit {
     this.aiPrediction = null;
     this.predictionMessage = '';
     this.predictionError = '';
+    this.realtimeVitals = null;
     this.loadPatientConsent();
+    this.loadRealtimeVitals(patient.id);
+  }
+
+  loadRealtimeVitals(patientId: string): void {
+    this.alertService.getLatestVitals(patientId).subscribe({
+      next: (vitals) => {
+        if (this.selectedPatient && this.selectedPatient.id === patientId) {
+          this.realtimeVitals = vitals;
+        }
+      },
+      error: () => {
+        // No real-time vitals recorded yet for this patient
+      }
+    });
   }
 
   closePatient(): void {

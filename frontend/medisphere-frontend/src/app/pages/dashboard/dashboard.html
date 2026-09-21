@@ -110,6 +110,21 @@
 
       </button>
 
+
+      <button
+        [class.active]="activeTab === 'alerts'"
+        (click)="setTab('alerts')">
+
+        <span class="nav-icon">
+          04
+        </span>
+
+        <span>
+          Real-Time Alerts
+        </span>
+
+      </button>
+
     </div>
 
 
@@ -124,6 +139,12 @@
   </nav>
 
 
+
+  <!-- =========================================================
+       REAL-TIME ALERTS
+       ========================================================= -->
+
+  <app-alerts *ngIf="activeTab === 'alerts'"></app-alerts>
 
   <!-- =========================================================
        PATIENT DATABASE
@@ -1083,7 +1104,7 @@
         </label>
 
         <strong>
-          {{ selectedPatient.heartRate }}
+          {{ realtimeVitals ? (realtimeVitals.heartRate + ' bpm') : selectedPatient.heartRate }}
         </strong>
 
         <span class="metric-live">
@@ -1105,7 +1126,7 @@
         </label>
 
         <strong>
-          {{ selectedPatient.bloodPressure }}
+          {{ realtimeVitals ? (realtimeVitals.systolicBP + '/' + realtimeVitals.diastolicBP + ' mmHg') : selectedPatient.bloodPressure }}
         </strong>
 
         <span class="metric-live">
@@ -1158,6 +1179,61 @@
 
       </div>
 
+    </section>
+
+    <!-- REAL-TIME WEARABLE VITALS (KAFKA STREAM / MONGODB) -->
+    <section class="realtime-twin-section">
+      <div class="realtime-twin-header">
+        <div>
+          <span class="live-pill"><span class="pulse-dot"></span> LIVE WEARABLE TELEMETRY (KAFKA)</span>
+          <h3>Current Real-Time Vitals</h3>
+          <p *ngIf="realtimeVitals">
+            Last updated: <strong>{{ realtimeVitals.timestamp | date:'mediumTime' }}</strong>
+            (Source: MongoDB <code>realtime_vitals</code> &amp; Kafka <code>patient-vitals</code>)
+          </p>
+          <p *ngIf="!realtimeVitals" class="no-stream-note">
+            No live wearable telemetry received yet for this patient.
+          </p>
+        </div>
+      </div>
+
+      <div class="realtime-metrics-grid" *ngIf="realtimeVitals">
+        <div class="rt-card rt-hr">
+          <span class="rt-label">CURRENT HEART RATE</span>
+          <div class="rt-val">
+            <strong>{{ realtimeVitals.heartRate }}</strong>
+            <span class="rt-unit">bpm</span>
+          </div>
+          <span class="rt-badge">Normal: 60-100</span>
+        </div>
+
+        <div class="rt-card rt-spo2">
+          <span class="rt-label">BLOOD OXYGEN (SpO2)</span>
+          <div class="rt-val">
+            <strong>{{ realtimeVitals.spo2 }}</strong>
+            <span class="rt-unit">%</span>
+          </div>
+          <span class="rt-badge" [class.alert]="realtimeVitals.spo2 < 90">Normal: &ge; 90%</span>
+        </div>
+
+        <div class="rt-card rt-bp">
+          <span class="rt-label">BLOOD PRESSURE</span>
+          <div class="rt-val">
+            <strong>{{ realtimeVitals.systolicBP }}/{{ realtimeVitals.diastolicBP }}</strong>
+            <span class="rt-unit">mmHg</span>
+          </div>
+          <span class="rt-badge" [class.alert]="realtimeVitals.systolicBP >= 180">Normal: &lt; 180</span>
+        </div>
+
+        <div class="rt-card rt-temp">
+          <span class="rt-label">TEMPERATURE</span>
+          <div class="rt-val">
+            <strong>{{ realtimeVitals.temperature | number:'1.1-1' }}</strong>
+            <span class="rt-unit">&deg;C</span>
+          </div>
+          <span class="rt-badge" [class.alert]="realtimeVitals.temperature >= 39">Normal: &lt; 39.0&deg;C</span>
+        </div>
+      </div>
     </section>
 
 

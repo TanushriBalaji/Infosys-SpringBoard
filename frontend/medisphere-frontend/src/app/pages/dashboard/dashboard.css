@@ -3986,3 +3986,117 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+/* REAL-TIME TWIN VITALS SECTION */
+.realtime-twin-section {
+  margin-top: 2rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.realtime-twin-header {
+  margin-bottom: 1.25rem;
+}
+
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.4);
+}
+
+.realtime-twin-header h3 {
+  margin: 0.25rem 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.realtime-twin-header p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.no-stream-note {
+  font-style: italic;
+  color: #94a3b8;
+}
+
+.realtime-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.rt-card {
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rt-card.rt-hr { border-left: 4px solid #ef4444; }
+.rt-card.rt-spo2 { border-left: 4px solid #0284c7; }
+.rt-card.rt-bp { border-left: 4px solid #8b5cf6; }
+.rt-card.rt-temp { border-left: 4px solid #f59e0b; }
+
+.rt-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.rt-val {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.rt-val strong {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.rt-unit {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.rt-badge {
+  font-size: 0.75rem;
+  color: #166534;
+  font-weight: 600;
+}
+
+.rt-badge.alert {
+  color: #dc2626;
+  font-weight: 700;
+}
+

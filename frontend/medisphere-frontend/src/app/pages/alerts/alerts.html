@@ -1,0 +1,232 @@
+<div class="alerts-container">
+
+  <!-- TOP HEADER & STATUS BAR -->
+  <header class="alerts-header">
+    <div>
+      <span class="eyebrow">MEDISPHERE / KAFKA STREAMING ENGINE</span>
+      <h2>Real-Time Monitoring & Alerts</h2>
+      <p>Kafka topic <code>patient-vitals</code> streaming through Spring Boot Clinical Rule Engine</p>
+    </div>
+
+    <div class="live-status-pill">
+      <span class="pulse-dot"></span>
+      <strong>KAFKA STREAM LIVE</strong>
+    </div>
+  </header>
+
+  <!-- PATIENT SELECTOR & STREAM CONTROL -->
+  <section class="patient-selector-panel">
+    <div class="selector-container">
+      <div class="selector-header">
+        <span class="panel-badge">REAL MONGODB PATIENT BINDING</span>
+        <h3>Active Monitored Patient</h3>
+      </div>
+      <div class="selector-body">
+        <div class="select-group">
+          <label for="patientSelect">Select Patient from Database:</label>
+          <select
+            id="patientSelect"
+            class="patient-dropdown"
+            [(ngModel)]="selectedPatientId"
+            (change)="onPatientChange()">
+            <option *ngFor="let p of patients" [value]="p.id">
+              {{ p.name }} ({{ p.id }})
+            </option>
+          </select>
+        </div>
+
+        <div class="selector-actions">
+          <button
+            class="btn btn-primary btn-stream"
+            type="button"
+            (click)="startStreamForSelectedPatient()"
+            [disabled]="!selectedPatientId">
+            <i>📡</i> Start Stream for This Patient
+          </button>
+
+          <label class="filter-toggle">
+            <input type="checkbox" [(ngModel)]="filterByPatientOnly">
+            <span>Filter alerts for this patient only</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO SIMULATOR CONTROL BAR -->
+  <section class="simulator-panel">
+    <div class="panel-info">
+      <strong>Wearable Simulator Control (Target: {{ selectedPatientName || selectedPatientId }})</strong>
+      <span>Inject real-time telemetry stream events into Kafka</span>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn btn-warning" type="button" (click)="triggerAbnormalHeartRate()">
+        <i>⚡</i> Demo HR Alert (145 bpm)
+      </button>
+
+      <button class="btn btn-danger" type="button" (click)="triggerAbnormalBP()">
+        <i>⚡</i> Demo BP Alert (185 mmHg)
+      </button>
+
+      <button class="btn btn-info" type="button" (click)="triggerLowSpo2()">
+        <i>⚡</i> Demo Low SpO2 (87%)
+      </button>
+    </div>
+  </section>
+
+  <div *ngIf="actionMessage" class="toast-notice">
+    {{ actionMessage }}
+  </div>
+
+  <!-- LIVE TELEMETRY CARDS -->
+  <section class="telemetry-grid">
+
+    <!-- HEART RATE CARD WITH SPARKLINE -->
+    <div class="telemetry-card card-hr">
+      <div class="card-header">
+        <span>HEART RATE</span>
+        <span class="live-tag">● SSE</span>
+      </div>
+      <div class="card-value">
+        <strong>{{ latestTelemetry?.heartRate || '78' }}</strong>
+        <span class="unit">bpm</span>
+      </div>
+
+      <!-- SPARKLINE CHART -->
+      <div class="sparkline-wrap">
+        <svg viewBox="0 0 300 60" preserveAspectRatio="none">
+          <polyline
+            fill="none"
+            stroke="#ef4444"
+            stroke-width="3"
+            [attr.points]="getSparklinePoints()"
+          />
+        </svg>
+      </div>
+
+      <div class="card-footer">
+        <span>Monitored: <strong>{{ selectedPatientName || latestTelemetry?.patientId || 'Connecting...' }}</strong></span>
+      </div>
+    </div>
+
+    <!-- SPO2 CARD -->
+    <div class="telemetry-card card-spo2">
+      <div class="card-header">
+        <span>BLOOD OXYGEN (SpO2)</span>
+        <span class="live-tag">● SSE</span>
+      </div>
+      <div class="card-value">
+        <strong>{{ latestTelemetry?.spo2 || '98' }}</strong>
+        <span class="unit">%</span>
+      </div>
+      <div class="card-bar">
+        <div class="bar-fill" [style.width.%]="latestTelemetry?.spo2 || 98"></div>
+      </div>
+      <div class="card-footer">
+        <span>Normal threshold: <strong>&ge; 90%</strong></span>
+      </div>
+    </div>
+
+    <!-- BLOOD PRESSURE CARD -->
+    <div class="telemetry-card card-bp">
+      <div class="card-header">
+        <span>BLOOD PRESSURE</span>
+        <span class="live-tag">● SSE</span>
+      </div>
+      <div class="card-value">
+        <strong>{{ (latestTelemetry?.systolicBP || '120') + '/' + (latestTelemetry?.diastolicBP || '80') }}</strong>
+        <span class="unit">mmHg</span>
+      </div>
+      <div class="card-footer">
+        <span>Critical threshold: <strong>&ge; 180 mmHg</strong></span>
+      </div>
+    </div>
+
+    <!-- TEMPERATURE CARD -->
+    <div class="telemetry-card card-temp">
+      <div class="card-header">
+        <span>TEMPERATURE</span>
+        <span class="live-tag">● SSE</span>
+      </div>
+      <div class="card-value">
+        <strong>{{ latestTelemetry?.temperature ? (latestTelemetry?.temperature | number:'1.1-1') : '37.0' }}</strong>
+        <span class="unit">&deg;C</span>
+      </div>
+      <div class="card-footer">
+        <span>High threshold: <strong>&ge; 39.0 &deg;C</strong></span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ACTIVE CLINICAL ALERTS FEED -->
+  <section class="alerts-feed-section">
+
+    <div class="feed-header">
+      <div>
+        <h3>Active Clinical Alerts (MongoDB 'alerts' Collection)</h3>
+        <small *ngIf="filterByPatientOnly && selectedPatientName" class="filter-hint">Showing alerts filtered for {{ selectedPatientName }}</small>
+      </div>
+      <span class="alert-count">{{ displayedAlerts.length }} alerts</span>
+    </div>
+
+    <div *ngIf="loading" class="alerts-loading">
+      <div class="spinner"></div>
+      <span>Connecting to Kafka & MongoDB alert stream...</span>
+    </div>
+
+    <div *ngIf="displayedAlerts.length === 0 && !loading" class="no-alerts">
+      <i>✓</i>
+      <p>No active critical alerts detected for current filter. All patient vital streams normal.</p>
+    </div>
+
+    <div *ngIf="displayedAlerts.length > 0" class="alerts-list">
+
+      <article *ngFor="let alert of displayedAlerts" class="alert-card" [class]="getSeverityClass(alert.severity)">
+
+        <div class="alert-main">
+
+          <div class="alert-meta">
+            <span class="badge" [class]="getSeverityClass(alert.severity)">{{ alert.severity }}</span>
+            <span class="patient-id">PATIENT: <strong>{{ alert.patientId }}</strong></span>
+            <span class="time-tag">{{ alert.timestamp | date:'mediumTime' }}</span>
+          </div>
+
+          <h4 class="alert-title">{{ alert.vitalName }}: {{ alert.vitalValue }}</h4>
+
+          <p class="alert-msg">{{ alert.message }}</p>
+
+          <div class="alert-details">
+            <span>Type: <code>{{ alert.alertType }}</code></span>
+            <span>Threshold: <code>{{ alert.threshold }}</code></span>
+          </div>
+
+        </div>
+
+        <div class="alert-actions">
+          <span class="status-pill" [class]="getStatusClass(alert.status)">{{ alert.status }}</span>
+
+          <button
+            *ngIf="alert.status === 'ACTIVE'"
+            class="btn-action btn-ack"
+            (click)="acknowledgeAlert(alert)">
+            Acknowledge
+          </button>
+
+          <button
+            *ngIf="alert.status !== 'RESOLVED'"
+            class="btn-action btn-resolve"
+            (click)="resolveAlert(alert)">
+            Resolve
+          </button>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+</div>
