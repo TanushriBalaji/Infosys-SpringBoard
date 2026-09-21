@@ -7,8 +7,9 @@ import pandas as pd
 
 # ============================================================
 # MEDISPHERE FHIR → ML FEATURE EXTRACTION
-# Target: Diabetes
-# SNOMED CT: 44054006
+# Targets:
+#   1. Diabetes
+#   2. Cardiovascular Disease (CVD)
 # ============================================================
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -41,6 +42,28 @@ CODES = {
     "calcium": "49765-1",
     "sodium": "2947-0",
     "potassium": "6298-4",
+}
+
+
+# ============================================================
+# DISEASE CODES
+# ============================================================
+
+# Diabetes
+DIABETES_CODE = "44054006"
+
+
+# Cardiovascular disease conditions found
+# in the actual MediSphere FHIR dataset.
+
+CVD_CODES = {
+    "53741008": "Coronary Heart Disease",
+    "88805009": "Chronic congestive heart failure",
+    "49436004": "Atrial Fibrillation",
+    "410429000": "Cardiac Arrest",
+    "429007001": "History of cardiac arrest",
+    "22298006": "Myocardial Infarction",
+    "399211009": "History of myocardial infarction",
 }
 
 
@@ -102,10 +125,12 @@ files = glob.glob(
     str(FHIR_DIR / "*.json")
 )
 
+
 print("=" * 70)
 print("MEDISPHERE FHIR FEATURE EXTRACTION")
 print("=" * 70)
 
+print()
 print("FHIR directory:")
 print(FHIR_DIR)
 
@@ -121,6 +146,8 @@ print()
 patients = {}
 
 diabetes_condition_count = 0
+
+cvd_condition_count = 0
 
 error_count = 0
 
@@ -147,6 +174,8 @@ for file_index, filepath in enumerate(files, 1):
         observations = []
 
         has_diabetes = False
+
+        has_cvd = False
 
 
         # ====================================================
@@ -201,13 +230,30 @@ for file_index, filepath in enumerate(files, 1):
 
                     code = coding.get("code")
 
-                    if code == "44054006":
+                    if not code:
+                        continue
+
+
+                    # ------------------------------
+                    # DIABETES
+                    # ------------------------------
+
+                    if code == DIABETES_CODE:
 
                         has_diabetes = True
 
                         diabetes_condition_count += 1
 
-                        break
+
+                    # ------------------------------
+                    # CVD
+                    # ------------------------------
+
+                    if code in CVD_CODES:
+
+                        has_cvd = True
+
+                        cvd_condition_count += 1
 
 
         # ====================================================
@@ -412,7 +458,17 @@ for file_index, filepath in enumerate(files, 1):
 
             "potassium": features["potassium"],
 
+            # ------------------------------------------
+            # TARGET 1: DIABETES
+            # ------------------------------------------
+
             "diabetes": 1 if has_diabetes else 0,
+
+            # ------------------------------------------
+            # TARGET 2: CVD
+            # ------------------------------------------
+
+            "cvd": 1 if has_cvd else 0,
 
         }
 
@@ -474,6 +530,11 @@ print(
     len(df)
 )
 
+
+print()
+print("DIABETES TARGET")
+print("-" * 70)
+
 print(
     "Diabetes positive:",
     int(df["diabetes"].sum())
@@ -484,8 +545,23 @@ print(
     int((df["diabetes"] == 0).sum())
 )
 
-print()
 
+print()
+print("CVD TARGET")
+print("-" * 70)
+
+print(
+    "CVD positive:",
+    int(df["cvd"].sum())
+)
+
+print(
+    "No CVD:",
+    int((df["cvd"] == 0).sum())
+)
+
+
+print()
 print("FEATURES")
 print("-" * 70)
 
@@ -502,10 +578,18 @@ print(
     diabetes_condition_count
 )
 
+
+print(
+    "CVD Condition records:",
+    cvd_condition_count
+)
+
+
 print(
     "Files with errors:",
     error_count
 )
+
 
 print()
 print("Saved to:")

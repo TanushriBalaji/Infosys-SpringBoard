@@ -944,484 +944,6 @@
 
 
 
-    <!-- =========================================================
-         FEDERATED AI SECTION
-         ========================================================= -->
-
-    <section class="federated-ai-section">
-
-
-      <!-- SECTION HEADER -->
-
-      <div class="section-header">
-
-        <div>
-
-          <span class="section-eyebrow">
-            ARTIFICIAL INTELLIGENCE
-          </span>
-
-
-          <h2>
-            Federated Learning
-          </h2>
-
-
-          <p>
-            Privacy-preserving machine learning across
-            multiple simulated hospitals.
-          </p>
-
-        </div>
-
-
-        <div class="ai-status">
-
-          <span
-            class="status-dot"
-            [class.online]="federatedStatus?.status === 'running' && federatedStatus?.model_loaded">
-          </span>
-
-
-          {{
-            federatedStatus?.status === 'running' && federatedStatus?.model_loaded
-              ? 'AI Service Online'
-              : 'AI Service Offline'
-          }}
-
-        </div>
-
-      </div>
-
-
-
-      <!-- =======================================================
-           STATUS CARDS
-           ======================================================= -->
-
-      <div class="ai-stat-grid">
-
-
-        <!-- HOSPITALS -->
-
-        <div class="ai-stat-card">
-
-          <span class="ai-stat-label">
-            Hospitals
-          </span>
-
-
-          <strong>
-            {{ federatedStatus?.hospitals ?? '—' }}
-          </strong>
-
-
-          <small>
-            Federated clients
-          </small>
-
-        </div>
-
-
-
-        <!-- MODEL -->
-
-        <div class="ai-stat-card">
-
-          <span class="ai-stat-label">
-            Model
-          </span>
-
-
-          <strong>
-            {{ federatedStatus?.model ?? '—' }}
-          </strong>
-
-
-          <small>
-            {{ federatedStatus?.trees_per_hospital ?? '—' }} local trees per hospital
-          </small>
-
-        </div>
-
-
-
-        <!-- STATUS -->
-
-        <div class="ai-stat-card">
-
-          <span class="ai-stat-label">
-            Status
-          </span>
-
-
-          <strong>
-
-            {{
-              federatedStatus?.model_loaded
-                ? 'Loaded'
-                : 'Unavailable'
-            }}
-
-          </strong>
-
-
-          <small>
-            Global model
-          </small>
-
-        </div>
-
-      </div>
-
-
-
-      <!-- =======================================================
-           TRAINING CONTROL
-           ======================================================= -->
-
-      <div class="ai-control-panel">
-
-
-        <div>
-
-          <h3>
-            Federated Random Forest Model
-          </h3>
-
-
-          <p>
-
-            Each hospital trains a local Random Forest.
-            The local trees are then aggregated into a
-            global federated model.
-
-          </p>
-
-        </div>
-
-
-        <button
-          class="train-ai-button"
-          (click)="loadFederatedAI()">
-
-          Refresh AI Results
-
-        </button>
-
-      </div>
-
-
-
-      <!-- =======================================================
-           SUCCESS MESSAGE
-           ======================================================= -->
-
-      <div
-        class="ai-message"
-        *ngIf="aiMessage">
-
-        {{ aiMessage }}
-
-      </div>
-
-
-
-      <!-- =======================================================
-           ERROR MESSAGE
-           ======================================================= -->
-
-      <div
-        class="ai-error"
-        *ngIf="aiError">
-
-        {{ aiError }}
-
-      </div>
-
-
-
-      <!-- =======================================================
-           GLOBAL MODEL RESULTS
-           ======================================================= -->
-
-      <div
-        class="ai-results"
-        *ngIf="federatedResults as results">
-
-
-        <!-- RESULTS HEADER -->
-
-        <div class="results-header">
-
-          <div>
-
-            <span class="section-eyebrow">
-              GLOBAL MODEL
-            </span>
-
-
-            <h3>
-              Federated Model Performance
-            </h3>
-
-          </div>
-
-
-          <span class="model-badge">
-            Random Forest
-          </span>
-
-        </div>
-
-
-
-        <!-- =====================================================
-             METRIC GRID
-             ===================================================== -->
-
-        <div class="metric-grid">
-
-
-          <!-- ACCURACY -->
-
-          <div class="metric-card">
-
-            <span>
-              Accuracy
-            </span>
-
-
-            <strong>
-
-              {{
-                results.global_metrics.accuracy * 100
-                  | number:'1.1-2'
-              }}%
-
-            </strong>
-
-          </div>
-
-
-
-          <!-- PRECISION -->
-
-          <div class="metric-card">
-
-            <span>
-              Precision
-            </span>
-
-
-            <strong>
-
-              {{
-                results.global_metrics.precision * 100
-                  | number:'1.1-2'
-              }}%
-
-            </strong>
-
-          </div>
-
-
-
-          <!-- RECALL -->
-
-          <div class="metric-card">
-
-            <span>
-              Recall
-            </span>
-
-
-            <strong>
-
-              {{
-                results.global_metrics.recall * 100
-                  | number:'1.1-2'
-              }}%
-
-            </strong>
-
-          </div>
-
-
-
-          <!-- F1 -->
-
-          <div class="metric-card">
-
-            <span>
-              F1 Score
-            </span>
-
-
-            <strong>
-
-              {{
-                results.global_metrics.f1 * 100
-                  | number:'1.1-2'
-              }}%
-
-            </strong>
-
-          </div>
-
-
-
-          <!-- ROC AUC -->
-
-          <div class="metric-card">
-
-            <span>
-              ROC-AUC
-            </span>
-
-
-            <strong>
-
-              {{
-                results.global_metrics.roc_auc * 100
-                  | number:'1.1-2'
-              }}%
-
-            </strong>
-
-          </div>
-
-
-          <!-- PR AUC -->
-
-          <div class="metric-card">
-
-            <span>
-              PR-AUC
-            </span>
-
-
-            <strong>
-
-              {{
-                results.global_metrics.pr_auc * 100
-                  | number:'1.1-2'
-              }}%
-
-            </strong>
-
-          </div>
-
-
-          <!-- GLOBAL TREES -->
-
-          <div class="metric-card">
-
-            <span>
-              Global Trees
-            </span>
-
-
-            <strong>
-              {{ results.federated_learning.global_trees }}
-            </strong>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =====================================================
-             HOSPITAL TRAINING TABLE
-             ===================================================== -->
-
-        <div class="hospital-table">
-
-
-          <h3>
-            Hospital Training Nodes
-          </h3>
-
-
-          <table>
-
-
-            <thead>
-
-              <tr>
-
-                <th>
-                  Hospital
-                </th>
-
-                <th>
-                  Samples
-                </th>
-
-                <th>
-                  Trees
-                </th>
-
-                <th>
-                  Positive
-                </th>
-
-                <th>
-                  Status
-                </th>
-
-              </tr>
-
-            </thead>
-
-
-
-            <tbody>
-
-              <tr
-                *ngFor="let hospital of hospitalResults">
-
-
-                <td>
-                  {{ hospital.hospital }}
-                </td>
-
-
-                <td>
-                  {{ hospital.patients }}
-                </td>
-
-
-                <td>
-                  {{ hospital.local_trees }}
-                </td>
-
-
-                <td>
-                  {{ hospital.diabetes_positive }}
-                </td>
-
-                <td>
-                  {{ hospital.status }}
-
-                </td>
-
-
-              </tr>
-
-            </tbody>
-
-
-          </table>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
   </main>
 
 
@@ -1633,6 +1155,325 @@
         <span class="metric-live">
           LIVE
         </span>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         AI RISK PREDICTION SECTION
+         ========================================================= -->
+
+    <section class="federated-ai-section">
+
+      <div class="section-header">
+
+        <div>
+
+          <span class="section-eyebrow">
+            ARTIFICIAL INTELLIGENCE
+          </span>
+
+          <h2>
+            AI Risk Prediction
+          </h2>
+
+          <p>
+            CVD and Diabetes prediction using the trained
+            three-hospital federated Random Forest models.
+          </p>
+
+        </div>
+
+        <div class="ai-status">
+
+          <span
+            class="status-dot"
+            [class.online]="
+              aiHealth?.status === 'UP' &&
+              aiHealth?.cvd_model_loaded &&
+              aiHealth?.diabetes_model_loaded
+            ">
+          </span>
+
+          {{
+            aiHealth?.status === 'UP' &&
+            aiHealth?.cvd_model_loaded &&
+            aiHealth?.diabetes_model_loaded
+              ? 'AI SERVICE ONLINE'
+              : 'AI SERVICE OFFLINE'
+          }}
+
+        </div>
+
+      </div>
+
+
+      <div class="ai-stat-grid">
+
+        <div class="ai-stat-card">
+
+          <span class="ai-stat-label">
+            Federated Hospitals
+          </span>
+
+          <strong>
+            3
+          </strong>
+
+          <small>
+            Simulated hospital nodes
+          </small>
+
+        </div>
+
+
+        <div class="ai-stat-card">
+
+          <span class="ai-stat-label">
+            Global Trees
+          </span>
+
+          <strong>
+            150
+          </strong>
+
+          <small>
+            50 trees per hospital
+          </small>
+
+        </div>
+
+
+        <div class="ai-stat-card">
+
+          <span class="ai-stat-label">
+            Models
+          </span>
+
+          <strong>
+            CVD + Diabetes
+          </strong>
+
+          <small>
+            Trained federated models
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="ai-control-panel">
+
+        <div>
+
+          <h3>
+            Patient Risk Analysis
+          </h3>
+
+          <p>
+            {{
+              selectedPatient
+                ? 'Run the trained AI models against the selected patient record.'
+                : 'Open a Digital Twin and select a patient to run risk prediction.'
+            }}
+          </p>
+
+        </div>
+
+        <button
+          class="train-ai-button"
+          type="button"
+          (click)="predictSelectedPatient()"
+          [disabled]="
+            !selectedPatient ||
+            predictionLoading
+          ">
+
+          {{
+            predictionLoading
+              ? 'Analyzing...'
+              : 'Run AI Prediction'
+          }}
+
+        </button>
+
+      </div>
+
+
+      <div
+        class="ai-message"
+        *ngIf="predictionMessage">
+
+        {{ predictionMessage }}
+
+      </div>
+
+
+      <div
+        class="ai-error"
+        *ngIf="predictionError">
+
+        {{ predictionError }}
+
+      </div>
+
+
+      <div
+        class="ai-results"
+        *ngIf="aiPrediction as prediction">
+
+        <div class="results-header">
+
+          <div>
+
+            <span class="section-eyebrow">
+              PREDICTION RESULT
+            </span>
+
+            <h3>
+              {{ selectedPatient?.name || 'Selected Patient' }}
+            </h3>
+
+          </div>
+
+          <span class="model-badge">
+            FEDERATED RF · 150 TREES
+          </span>
+
+        </div>
+
+
+        <div class="metric-grid">
+
+          <div class="metric-card">
+
+            <span>
+              CVD RISK
+            </span>
+
+            <strong>
+              {{ formatPercentage(prediction.predictions.cvd.percentage) }}
+            </strong>
+
+            <small
+              [class]="'risk-pill ' + getRiskClass(
+                prediction.predictions.cvd.risk_level
+              )">
+
+              {{ prediction.predictions.cvd.risk_level }}
+
+            </small>
+
+          </div>
+
+
+          <div class="metric-card">
+
+            <span>
+              DIABETES RISK
+            </span>
+
+            <strong>
+              {{ formatPercentage(prediction.predictions.diabetes.percentage) }}
+            </strong>
+
+            <small
+              [class]="'risk-pill ' + getRiskClass(
+                prediction.predictions.diabetes.risk_level
+              )">
+
+              {{ prediction.predictions.diabetes.risk_level }}
+
+            </small>
+
+          </div>
+
+
+          <div class="metric-card">
+
+            <span>
+              MODEL
+            </span>
+
+            <strong>
+              FEDERATED
+            </strong>
+
+            <small>
+              Random Forest
+            </small>
+
+          </div>
+
+
+          <div class="metric-card">
+
+            <span>
+              GLOBAL TREES
+            </span>
+
+            <strong>
+              {{ prediction.model.trees }}
+            </strong>
+
+            <small>
+              Across 3 hospitals
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="hospital-table">
+
+          <h3>
+            AI Interpretation
+          </h3>
+
+          <div class="ai-interpretation-grid">
+
+            <div>
+              <span>CVD</span>
+              <strong>
+                {{
+                  prediction.predictions.cvd.risk_level
+                }}
+              </strong>
+              <p>
+                Model probability:
+                {{
+                  formatPercentage(
+                    prediction.predictions.cvd.percentage
+                  )
+                }}
+              </p>
+            </div>
+
+            <div>
+              <span>DIABETES</span>
+              <strong>
+                {{
+                  prediction.predictions.diabetes.risk_level
+                }}
+              </strong>
+              <p>
+                Model probability:
+                {{
+                  formatPercentage(
+                    prediction.predictions.diabetes.percentage
+                  )
+                }}
+              </p>
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 

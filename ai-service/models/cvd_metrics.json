@@ -1,0 +1,46 @@
+{
+  "model_type": "FederatedRandomForest",
+  "target": "cvd",
+  "dataset_patients": 1180,
+  "training_patients": 944,
+  "testing_patients": 236,
+  "training_positive": 134,
+  "testing_positive": 34,
+  "num_hospitals": 3,
+  "local_trees_per_hospital": 50,
+  "global_trees": 150,
+  "accuracy": 0.8940677966101694,
+  "precision": 0.7647058823529411,
+  "recall": 0.38235294117647056,
+  "f1": 0.5098039215686274,
+  "roc_auc": 0.8894874781595806,
+  "pr_auc": 0.6224420806017479,
+  "confusion_matrix": [
+    [
+      198,
+      4
+    ],
+    [
+      21,
+      13
+    ]
+  ],
+  "features": [
+    "age",
+    "gender",
+    "height_cm",
+    "weight_kg",
+    "bmi",
+    "systolic_bp",
+    "diastolic_bp",
+    "glucose",
+    "hba1c",
+    "hdl_cholesterol",
+    "total_cholesterol",
+    "triglycerides",
+    "creatinine",
+    "calcium",
+    "sodium",
+    "potassium"
+  ]
+}
